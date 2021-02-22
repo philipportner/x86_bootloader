@@ -1,5 +1,6 @@
+section .boot
 bits 16 ; tell NASM this is 16bit code
-org 0x7c00 ; tell NASM to start outputting stuff at 0x7c00
+global boot
 
 boot:
     mov ax, 0x2401
@@ -78,7 +79,16 @@ boot2:
     add ebx,2
     jmp .loop
 halt:
+    mov esp, kernel_stack_top
+    extern kmain
+    call kmain
     cli
     hlt
 
 times 1024 - ($-$$) db 0
+
+section .bss
+align 4
+kernel_stack_bottom: equ $
+    resb 16384 ; 16kb
+kernel_stack_top:

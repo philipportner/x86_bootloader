@@ -3,16 +3,17 @@
 ## Requirements
 Ubuntu:
 ```
-sudo apt-get install nasm qemu
+sudo apt-get install nasm qemu gcc-multilib
 ```
 
 ## Compilation
 ```
 nasm -f bin boot.asm -o boot.bin
+gcc -m32 kmain.cpp boot.o -o kernel.bin -nostdlib -ffreestanding -std=c++11 -mno-red-zone -fno-exceptions -nostdlib -fno-rtti -Wall -Wextra -fno-pie -Werror -T linker.ld
 ```
 ## QEMU
 ```
-qemu-system-x86_64 -fda boot.bin
+qemu-system-x86_64 -fda kernel.bin
 ```
 
 ## Resources
